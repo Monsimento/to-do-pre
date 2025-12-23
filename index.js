@@ -15,7 +15,6 @@ function loadTasks() {
 	const saved = localStorage.getItem("tasks");
 	return saved ? JSON.parse(saved) : items;
 }
-// Функция создания элемента задачи
 function createItem(item) {
 	const template = document.getElementById("to-do__item-template");
 	const clone = template.content.querySelector(".to-do__item").cloneNode(true);
@@ -24,17 +23,14 @@ function createItem(item) {
 	const duplicateButton = clone.querySelector(".to-do__item-button_type_duplicate");
 	const editButton = clone.querySelector(".to-do__item-button_type_edit");
 
-	// Устанавливаем текст задачи
 	textElement.textContent = item;
 
-	// Обработчик для кнопки удаления
 	deleteButton.addEventListener('click', function() {
 		clone.remove();
 		const items = getTasksFromDOM();
 		saveTasks(items);
 	});
 
-	// Обработчик для кнопки копирования
 	duplicateButton.addEventListener('click', function() {
 		const itemName = textElement.textContent;
 		const newItem = createItem(itemName);
@@ -43,13 +39,11 @@ function createItem(item) {
 		saveTasks(items);
 	});
 
-	// Обработчик для кнопки редактирования
 	editButton.addEventListener('click', function() {
 		textElement.setAttribute('contenteditable', 'true');
 		textElement.focus();
 	});
 
-	// Сохранение изменений при завершении редактирования
 	textElement.addEventListener('blur', function() {
 		textElement.setAttribute('contenteditable', 'false');
 		const items = getTasksFromDOM();
@@ -59,7 +53,6 @@ function createItem(item) {
 	return clone;
 }
 
-// Функция получения задач из DOM
 function getTasksFromDOM() {
 	const itemsNamesElements = listElement.querySelectorAll('.to-do__item-text');
 	const tasks = [];
@@ -70,12 +63,10 @@ function getTasksFromDOM() {
 	return tasks;
 }
 
-// Функция сохранения задач
 function saveTasks(tasks) {
 	localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
-// Обработчик отправки формы
 formElement.addEventListener('submit', function(event) {
 	event.preventDefault();
 
@@ -90,7 +81,6 @@ formElement.addEventListener('submit', function(event) {
 	}
 });
 
-// Инициализация приложения
 items = loadTasks();
 items.forEach(function(item) {
 	const itemElement = createItem(item);
