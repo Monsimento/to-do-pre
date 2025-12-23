@@ -29,17 +29,14 @@ function createItem(item) {
   const duplicateButton = clone.querySelector(".to-do__item-button_type_duplicate");
   const editButton = clone.querySelector(".to-do__item-button_type_edit");
 
-  // Устанавливаем текст задачи
   textElement.textContent = item;
 
-  // Обработчик для кнопки удаления
   deleteButton.addEventListener("click", () => {
     clone.remove();
     items = getTasksFromDOM();
     saveTasks(items);
   });
 
-  // Обработчик для кнопки копирования
   duplicateButton.addEventListener("click", () => {
     const itemName = textElement.textContent;
     const newItem = createItem(itemName);
@@ -48,13 +45,11 @@ function createItem(item) {
     saveTasks(items);
   });
 
-  // Обработчик для кнопки редактирования
   editButton.addEventListener("click", () => {
     textElement.setAttribute("contenteditable", "true");
     textElement.focus();
   });
 
-  // Обработчик для сохранения изменений после редактирования
   textElement.addEventListener("blur", () => {
     textElement.setAttribute("contenteditable", "false");
     items = getTasksFromDOM();
@@ -65,13 +60,10 @@ function createItem(item) {
 }
 
 function getTasksFromDOM() {
-  // Находим все элементы с текстом задач
   const itemsNamesElements = document.querySelectorAll(".to-do__item-text");
   
-  // Создаем массив для хранения задач
   const tasks = [];
   
-  // Проходим по всем элементам и собираем текст задач
   itemsNamesElements.forEach(element => {
     tasks.push(element.textContent);
   });
@@ -80,40 +72,29 @@ function getTasksFromDOM() {
 }
 
 function saveTasks(tasks) {
-  // Сохраняем задачи в localStorage
   localStorage.setItem("todoTasks", JSON.stringify(tasks));
 }
 
-// Инициализация приложения при загрузке
-// Загружаем задачи
 items = loadTasks();
 
-// Отображаем все задачи
 items.forEach(item => {
   const newItem = createItem(item);
   listElement.append(newItem);
 });
 
-// Обработчик для формы добавления новой задачи
 formElement.addEventListener("submit", (event) => {
   event.preventDefault();
-  
-  // Получаем текст из поля ввода
+
   const taskText = inputElement.value.trim();
-  
-  // Проверяем, что поле не пустое
+
   if (taskText) {
-    // Создаем новый элемент
     const newItem = createItem(taskText);
     
-    // Добавляем его в начало списка
     listElement.prepend(newItem);
     
-    // Обновляем и сохраняем задачи
     items = getTasksFromDOM();
     saveTasks(items);
     
-    // Очищаем поле ввода
     inputElement.value = "";
   }
 });
